@@ -122,6 +122,7 @@ menu:
   归档: /archives/ || fa fa-archive
   标签: /tags/ || fa fa-tags
   获奖: /honor/ || fa fa-check
+  OJ: https://oj.xjtuicpc.com/ || fa fa-home
   #schedule: /schedule/ || fa fa-calendar
   #sitemap: /sitemap.xml || fa fa-sitemap
   #commonweal: /404/ || fa fa-heartbeat
