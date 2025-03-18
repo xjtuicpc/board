@@ -131,7 +131,7 @@ ACM/ICPC是一个算法竞赛。
 
 ## 2021年6月
 
-![2021年6月](https://board.xjtuicpc.com/images/status.jpg)
+![2021年6月](/images/status.jpg)
 
 
 # 历届队员(TBD)

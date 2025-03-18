@@ -5,4 +5,4 @@ tags:
 - 2022
 ---
 
-![海报](https://board.xjtuicpc.com/images/2022contest.jpg)
+![海报](/images/2022contest.jpg)
