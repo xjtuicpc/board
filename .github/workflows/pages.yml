@@ -12,7 +12,9 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
-
+      with:
+          submodules: false
+ 
     - name: Setup Node.js
       uses: actions/setup-node@v2
       with:
@@ -20,9 +22,21 @@ jobs:
 
     - name: Install dependencies
       run: npm install
+    
+    - name: Install Hexo Git Deployer
+        run: |
+          npm install hexo-deployer-git --save
+          npm install hexo-cli -g
 
-    - name: Build the site
-      run: hexo generate
+    - name: Clean and Generate Static Files
+        run: |
+          hexo clean
+          hexo generate
+
+    - name: Configure Git
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
 
     - name: Deploy to GitHub Pages
       run: hexo deploy
