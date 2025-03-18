@@ -62,7 +62,9 @@ sudo systemctl reload nginx
 
 在 Settings-Pages 配置 source 为 action
 
-按照步骤来，即可访问 https://xjtuicpc.github.io/board/，注意 _config.yml 中 root: /board/
+按照步骤来，即可访问 https://xjtuicpc.github.io/board
+
+注意 _config.yml 中 root: /board/
 
 如果你想将 board.xjtuicpc.com 定向到该网页，在 github Settings-Pages 添加 CNAME 网址 board.xjtuicpc.com，并在相应的域名解析中增添 CNAME 定向到 https://xjtuicpc.github.io/board/
 
