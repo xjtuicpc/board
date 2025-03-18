@@ -60,3 +60,9 @@ time_format: HH:mm:ss
 per_page: 10
 pagination_dir: page
 theme: next
+
+deploy:
+  type: git
+  repository: https://github.com/xjtuicpc/board
+  branch: gh-pages
+
