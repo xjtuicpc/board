@@ -1,6 +1,7 @@
 ---
 title: 笔记1
 date: 2017-7-1
+updated: 2017-7-1 00:00:00
 categories:
   - Note
 ---

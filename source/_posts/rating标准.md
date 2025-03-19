@@ -1,6 +1,7 @@
 ---
 title: XJTUACM队Rating计算方案（试运行）
 date: 2017-1-1
+updated: 2017-1-1 00:00:00
 categorites:
 - ACM公告
 tags:
