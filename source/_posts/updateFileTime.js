@@ -23,17 +23,20 @@ fs.readdir("./",function(err,files){
 });
 
 
-const { exec } = require('child_process');
+const { execSync } = require('child_process');
 
 function getGitLastCommitTime(filePath) {
-  exec(`git log -1 --format=%ct ${filePath}`, (err, stdout, stderr) => {
-    if (err) {
-      console.error(`Error executing git log: ${err}`);
-      return;
-    }
-    const commitTime = new Date(parseInt(stdout) * 1000); // Convert from seconds to milliseconds
-    console.log(`Last commit time for ${filePath}: ${commitTime}`);
-  });
+  try {
+    const timestamp = execSync(`git log -1 --format=%ct ${filePath}`).toString().trim();
+	
+    const commitTime = new Date(parseInt(timestamp) * 1000);
+	const formaltime = commitTime.toLocaleString('zh-CN', { timeZone: 'Asia/Shanghai', hour12: false });
+	//console.log(`Last commit time for ${filePath}: ${formaltime}`);
+    return formaltime;
+  } catch (err) {
+    console.error(`Error executing git log: ${err}`);
+    return null;
+  }
 }
 
 /*
@@ -52,9 +55,10 @@ function writeFileTime(file,fs){
 				if(updateds.length>1) console.log("文件"+file+"匹配到多处update字段");
 				var updated=updateds[0].replace("updated: ","").replace(/-/g,"/");  //时间格式化为2018/01/29 21:33:30
 				//console.log("updated:",updated);
-				console.log("updated:", stats.atime, stats.mtime, updated);
-				if(new Date(stats.mtime).getTime()-new Date(Date.parse(updated))>1000*60*5){ // 只要修改时间和文章内updated时间差大于1000毫秒*60*5=5分钟就触发更新
-					var result= data.replace(RegExp,"updated: "+getFormatDate(stats.mtime)); //替换更新时间
+				var git_latest_update = getGitLastCommitTime(file)
+				//console.log("updated:", git_latest_update, updated, stats.atime, stats.mtime);
+				if(new Date(Date.parse(git_latest_update))-new Date(Date.parse(updated))>1000*60*5){ // 只要修改时间和文章内updated时间差大于1000毫秒*60*5=5分钟就触发更新
+					var result= data.replace(RegExp,"updated: "+ git_latest_update.replace(/\//g, '-')); //替换更新时间
 					fs.writeFile(file, result, 'utf8',function(err) { //写入新的文件内容
 						if (err) return console.log("写文件错误：",err);
 						fs.utimes(file,new Date(stats.atime),new Date(stats.mtime),function(err){  //还原访问时间和修改时间
@@ -66,31 +70,4 @@ function writeFileTime(file,fs){
 			});
 		}	
 	});
-}
-
-/*
- timeStr:时间，格式可为："September 16,2016 14:15:05、
- "September 16,2016"、"2016/09/16 14:15:05"、"2016/09/16"、
- '2014-04-23T18:55:49'和毫秒
- dateSeparator：年、月、日之间的分隔符，默认为"-"，
- timeSeparator：时、分、秒之间的分隔符，默认为":"
- */
-function getFormatDate(timeStr, dateSeparator, timeSeparator) {
-    dateSeparator = dateSeparator ? dateSeparator : "-";
-    timeSeparator = timeSeparator ? timeSeparator : ":";
-    var date = new Date(timeStr),
-            year = date.getFullYear(),// 获取完整的年份(4位,1970)
-            month = date.getMonth(),// 获取月份(0-11,0代表1月,用的时候记得加上1)
-            day = date.getDate(),// 获取日(1-31)
-            hour = date.getHours(),// 获取小时数(0-23)
-            minute = date.getMinutes(),// 获取分钟数(0-59)
-            seconds = date.getSeconds(),// 获取秒数(0-59)
-            Y = year + dateSeparator,
-            M = ((month + 1) > 9 ? (month + 1) : ('0' + (month + 1))) + dateSeparator,
-            D = (day > 9 ? day : ('0' + day)) + ' ',
-            h = (hour > 9 ? hour : ('0' + hour)) + timeSeparator,
-            m = (minute > 9 ? minute : ('0' + minute)) + timeSeparator,
-            s = (seconds > 9 ? seconds : ('0' + seconds)),
-            formatDate = Y + M + D + h + m + s;
-    return formatDate;
 }
