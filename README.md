@@ -1,7 +1,7 @@
 # Board
 the source of XJTU ACM Board
 
-自动更新到 https://board.xjtuicpc.com
+部署在 github page 上，自动更新到 https://board.xjtuicpc.com
 
 有问题请私戳周品良。
 
